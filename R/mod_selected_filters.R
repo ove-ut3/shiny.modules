@@ -32,7 +32,7 @@ selected_filters_server <- function(input, output, session, group_inputs, label_
 
     input_list <- group_inputs %>%
       reactiveValuesToList() %>%
-      .[grepl("-(selectized|reset_all)$", names(.),)] %>%
+      .[!grepl("-(selectized|reset_all)$", names(.),)] %>%
       { Filter(Negate(is.null), .) }
 
     if (length(input_list) == 0) {
