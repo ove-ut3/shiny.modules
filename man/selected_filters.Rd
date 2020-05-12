@@ -27,6 +27,8 @@ selected_filters_server(
 
 \item{group_inputs}{From shinyWidgets \code{pickerGroup} or \code{selectizeGroup}}
 
+\item{label_none}{Label display if no filter is set}
+
 \item{labels}{Rename filter codes to labels in sidebar}
 }
 \description{

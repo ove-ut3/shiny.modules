@@ -8,6 +8,7 @@
 #' @param output internal
 #' @param session internal
 #' @param group_inputs From shinyWidgets \code{pickerGroup} or \code{selectizeGroup}
+#' @param label_none Label display if no filter is set
 #' @param labels Rename filter codes to labels in sidebar
 #'
 #' @rdname selected_filters
@@ -17,7 +18,7 @@
 selected_filters_ui <- function(id){
   ns <- NS(id)
   tagList(
-    uiOutput(ns("filtres"))
+    shiny::uiOutput(ns("filtres"))
   )
 }
 
@@ -28,16 +29,16 @@ selected_filters_ui <- function(id){
 selected_filters_server <- function(input, output, session, group_inputs, label_none = "None", labels = c()){
   ns <- session$ns
 
-  output$filtres <- renderUI({
+  output$filtres <- shiny::renderUI({
 
     input_list <- group_inputs %>%
-      reactiveValuesToList() %>%
+      shiny::reactiveValuesToList() %>%
       .[!grepl("-(selectized|reset_all)$", names(.),)] %>%
       { Filter(Negate(is.null), .) }
 
     if (length(input_list) == 0) {
 
-      html <- div(HTML(label_none), style = "margin-left: 25px;")
+      html <- shiny::div(shiny::HTML(label_none), style = "margin-left: 25px;")
 
       return(html)
     }
@@ -51,12 +52,12 @@ selected_filters_server <- function(input, output, session, group_inputs, label_
     for (num in 1:length(input_list)) {
       html <- input_list[[num]]
       html <- purrr::map(html, ~ tippy::tippy(., tooltip = .))
-      html <- purrr::map(html, tags$li)
-      html <- tags$ul(html)
-      input_list[[num]] <- tags$li(names(input_list)[num], html)
+      html <- purrr::map(html, shiny::tags$li)
+      html <- shiny::tags$ul(html)
+      input_list[[num]] <- shiny::tags$li(names(input_list)[num], html)
     }
 
-    html <- tags$ul(input_list)
+    html <- shiny::tags$ul(input_list)
 
     return(html)
 
